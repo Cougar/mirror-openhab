@@ -21,6 +21,7 @@
     <module>org.openhab.binding.serial</module>
     <module>org.openhab.binding.onewire</module>
     <module>org.openhab.binding.wol</module>
+    <module>org.openhab.binding.networkhealth</module>
   </modules>
 
 </project>
