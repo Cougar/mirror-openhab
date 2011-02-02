@@ -1,6 +1,6 @@
 /**
  * openHAB, the open Home Automation Bus.
- * Copyright (C) 2010, openHAB.org <admin@openhab.org>
+ * Copyright (C) 2011, openHAB.org <admin@openhab.org>
  *
  * See the contributors.txt file in the distribution for a
  * full listing of individual contributors.
@@ -29,43 +29,57 @@
 
 package org.openhab.ui.webapp.internal.render;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.servlet.ServletException;
-
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.openhab.core.items.Item;
-import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.core.items.ItemNotUniqueException;
-import org.openhab.core.library.items.RollershutterItem;
-import org.openhab.core.library.types.OnOffType;
-import org.openhab.core.types.State;
 import org.openhab.model.sitemap.Frame;
-import org.openhab.model.sitemap.Group;
-import org.openhab.model.sitemap.Image;
-import org.openhab.model.sitemap.LinkableWidget;
-import org.openhab.model.sitemap.List;
-import org.openhab.model.sitemap.Selection;
 import org.openhab.model.sitemap.Sitemap;
-import org.openhab.model.sitemap.Switch;
 import org.openhab.model.sitemap.Widget;
-import org.openhab.ui.webapp.internal.WebAppService;
 import org.openhab.ui.webapp.internal.servlet.WebAppServlet;
+import org.openhab.ui.webapp.render.RenderException;
+import org.openhab.ui.webapp.render.WidgetRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PageRenderer extends DefaultWidgetRenderer {
+/**
+ * This is an implementation of the {@link WidgetRenderer} interface, which
+ * is the main entry point for HTML code construction.
+ * 
+ * It provides the HTML header and skeleton and delegates the rendering of
+ * widgets on the page to the dedicated widget renderers.
+ * 
+ * @author Kai Kreuzer
+ * @since 0.6.0
+ *
+ */
+public class PageRenderer extends AbstractWidgetRenderer {
 
 	private final static Logger logger = LoggerFactory.getLogger(PageRenderer.class);
-	private WebAppService service;
 
-	public PageRenderer(WebAppService service) {
-		this.service = service;
+	List<WidgetRenderer> widgetRenderers = new ArrayList<WidgetRenderer>();
+
+	public void addWidgetRenderer(WidgetRenderer widgetRenderer) {
+		widgetRenderers.add(widgetRenderer);
 	}
 
-	public StringBuilder processPage(String id, String sitemap, String label, EList<Widget> children, boolean async) throws IOException, ServletException {
+	public void removeWidgetRenderer(WidgetRenderer widgetRenderer) {
+		widgetRenderers.remove(widgetRenderer);
+	}
+
+	/**
+	 * This is the main method, which is called to produce the HTML code for a servlet request.
+	 * 
+	 * @param id the id of the parent widget whose children are about to appear on this page
+	 * @param sitemap the sitemap to use
+	 * @param label the title of this page
+	 * @param children a list of widgets that should appear on this page
+	 * @param async true, if this is an asynchronous request. This will use a different HTML skeleton
+	 * @return a string builder with the produced HTML code
+	 * @throws RenderException if an error occurs during the processing
+	 */
+	public StringBuilder processPage(String id, String sitemap, String label, EList<Widget> children, boolean async) throws RenderException {
 		
 		String snippet = getSnippet(async ? "layer" : "main");
 		snippet = snippet.replaceAll("%id%", id);
@@ -93,7 +107,7 @@ public class PageRenderer extends DefaultWidgetRenderer {
 	}
 
 	private void processChildren(StringBuilder sb_pre, StringBuilder sb_post,
-			EList<Widget> children) throws IOException, ServletException {
+			EList<Widget> children) throws RenderException {
 		
 		// put a single frame around all children widgets, if there are no explicit frames 
 		if(!children.isEmpty()) {
@@ -119,7 +133,7 @@ public class PageRenderer extends DefaultWidgetRenderer {
 			StringBuilder new_pre = new StringBuilder();
 			StringBuilder new_post = new StringBuilder();
 			StringBuilder widgetSB = new StringBuilder();
-			EList<Widget> nextChildren = processWidget(w, widgetSB);
+			EList<Widget> nextChildren = renderWidget(w, widgetSB);
 			if(nextChildren!=null) {
 				String[] parts = widgetSB.toString().split("%children%");
 				// no %children% placeholder found or at the end
@@ -146,94 +160,24 @@ public class PageRenderer extends DefaultWidgetRenderer {
 		
 	}
 
-	private EList<Widget> processWidget(Widget w, StringBuilder sb) throws IOException, ServletException {
-		String snippetName;
-		if(w instanceof Switch) {
-			Item item;
-			try {
-				item = service.getItemRegistry().getItem(service.getItem(w));
-				if(item instanceof RollershutterItem) {
-					snippetName = "rollerblind";
-				} else {
-					snippetName = "switch";
-				}
-			} catch (ItemNotFoundException e) {
-				logger.warn("Cannot determine item type of '{}'", service.getItem(w), e);
-				snippetName = "switch";
-			} catch (ItemNotUniqueException e) {
-				logger.warn("Cannot determine item type of '{}'", service.getItem(w), e);
-				snippetName = "switch";
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public EList<Widget> renderWidget(Widget w, StringBuilder sb) throws RenderException {
+		for(WidgetRenderer renderer : widgetRenderers) {
+			if(renderer.canRender(w)) {
+				return renderer.renderWidget(w, sb);
 			}
-		} else {
-			// for all others, we choose the snippet with the name of the instance
-			snippetName = w.eClass().getInstanceTypeName().substring(w.eClass().getInstanceTypeName().lastIndexOf(".")+1);
 		}
-		
-		if(!(w instanceof Frame || w instanceof Group) && 
-			(w instanceof LinkableWidget) && ((LinkableWidget)w).getChildren().size() > 0) {
-			snippetName += "_link";
-		}
-		String snippet = getSnippet(snippetName);
+		return null;
+	}
 
-		snippet = snippet.replaceAll("%id%", service.getWidgetId(w));
-		snippet = snippet.replaceAll("%icon%", service.getIcon(w));
-		snippet = snippet.replaceAll("%item%", service.getItem(w));
-		snippet = snippet.replaceAll("%label%", service.getLabel(w));
-		snippet = snippet.replaceAll("%servletname%", WebAppServlet.SERVLET_NAME);
-		
-		if(w instanceof Switch) {
-			State state = service.getState(w);
-			if(state.equals(OnOffType.ON)) {
-				snippet = snippet.replaceAll("%checked%", "checked=true");
-			} else {
-				snippet = snippet.replaceAll("%checked%", "");
-			}
-		}
-		
-		if(w instanceof Image) {
-			snippet = snippet.replaceAll("%url%", ((Image) w).getUrl());
-		}
-		
-		if(w instanceof List) {
-			String rowSnippet = getSnippet("list_row");
-			String state = service.getState(w).toString();
-			String[] rowContents = state.split(((List) w).getSeparator());
-			StringBuilder rowSB = new StringBuilder();
-			for(String row : rowContents) {
-				rowSB.append(rowSnippet.replace("%title%", row));
-			}
-			snippet = snippet.replace("%rows%", rowSB.toString());
-		}
-
-		if(w instanceof Selection) {
-			String state = service.getState(w).toString();
-			String[] labels = service.getLabel(w).split(";");
-			if(labels.length > 0) {
-				snippet = snippet.replace("%label_header%", labels[0]);
-				StringBuilder rowSB = new StringBuilder();
-				for(int i=1; i<labels.length; i++) {
-					String valuelabel = labels[i];
-					String rowSnippet = getSnippet("selection_row");
-					String value = StringUtils.substringBefore(valuelabel, "=");
-					String label = StringUtils.substringAfter(valuelabel, "=");
-					rowSnippet = rowSnippet.replace("%item%", service.getItem(w));
-					rowSnippet = rowSnippet.replace("%value%", value);
-					rowSnippet = rowSnippet.replace("%label%", label);
-					if(value.equals(state)) {
-						rowSnippet = rowSnippet.replace("%checked%", "checked=\"true\"");
-					} else {
-						rowSnippet = rowSnippet.replace("%checked%", "");
-					}
-					rowSB.append(rowSnippet);
-				}
-				snippet = snippet.replace("%rows%", rowSB.toString());
-			}
-		}
-		sb.append(snippet);
-		if(w instanceof Frame) {
-			return service.getChildren((Frame)w);
-		} else {
-			return null;
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean canRender(Widget w) {
+		return false;		
 	}
 }

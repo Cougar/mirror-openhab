@@ -31,14 +31,16 @@ Image :
 	'Image' ('item=' item=ID)? ('url=' url=(STRING));
 	
 Switch : 
-	'Switch' ('item=' item=ID) ('mappings=[' mappings+=Mapping (', ' mappings+=Mapping)* ']')?;
+	'Switch' ('item=' item=ID) ('mappings=[' mappings+=Mapping (',' mappings+=Mapping)* ']')?;
 	
 Selection : 
-	'Selection' ('item=' item=ID) ('mappings=[' mappings+=Mapping (', ' mappings+=Mapping)* ']')?;
+	'Selection' ('item=' item=ID) ('mappings=[' mappings+=Mapping (',' mappings+=Mapping)* ']')?;
 
 List : 
 	'List' ('item=' item=ID) ('separator=' separator=STRING);
 
 Mapping :
-	cmd=(ID|STRING) '=' label=(ID|STRING) (':' icon=(ID|STRING))?;
+	cmd=(ID|STRING) '=' label=(ID|STRING);
+
+terminal ID : '^'?('a'..'z'|'A'..'Z'|'_'|'0'..'9')+;
 	

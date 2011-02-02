@@ -1,3 +1,32 @@
+/**
+ * openHAB, the open Home Automation Bus.
+ * Copyright (C) 2011, openHAB.org <admin@openhab.org>
+ *
+ * See the contributors.txt file in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses>.
+ *
+ * Additional permission under GNU GPL version 3 section 7
+ *
+ * If you modify this Program, or any covered work, by linking or
+ * combining it with Eclipse (or a modified version of that library),
+ * containing parts covered by the terms of the Eclipse Public License
+ * (EPL), the licensors of this Program grant you additional permission
+ * to convey the resulting work.
+ */
+
 package org.openhab.model.parser.antlr.internal; 
 
 import java.io.InputStream;
@@ -24,7 +53,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalSitemapParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'sitemap'", "'label='", "'icon='", "'{'", "'}'", "'Frame'", "'item='", "'Text'", "'Group'", "'Image'", "'url='", "'Switch'", "'mappings=['", "', '", "']'", "'Selection'", "'List'", "'separator='", "'='", "':'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'sitemap'", "'label='", "'icon='", "'{'", "'}'", "'Frame'", "'item='", "'Text'", "'Group'", "'Image'", "'url='", "'Switch'", "'mappings=['", "','", "']'", "'Selection'", "'List'", "'separator='", "'='"
     };
     public static final int RULE_ID=4;
     public static final int RULE_STRING=5;
@@ -1978,7 +2007,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start ruleSwitch
-    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:891:1: ruleSwitch returns [EObject current=null] : ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) ;
+    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:891:1: ruleSwitch returns [EObject current=null] : ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) ;
     public final EObject ruleSwitch() throws RecognitionException {
         EObject current = null;
 
@@ -1991,11 +2020,11 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
          EObject temp=null; setCurrentLookahead(); resetLookahead(); 
             
         try {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:896:6: ( ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:1: ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:896:6: ( ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:1: ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
             {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:1: ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:3: 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:1: ( 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:897:3: 'Switch' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
             {
             match(input,22,FOLLOW_22_in_ruleSwitch1579); 
 
@@ -2044,7 +2073,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:929:3: ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:929:3: ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -2053,7 +2082,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
             }
             switch (alt21) {
                 case 1 :
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:929:5: 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']'
+                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:929:5: 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']'
                     {
                     match(input,23,FOLLOW_23_in_ruleSwitch1624); 
 
@@ -2095,7 +2124,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:957:2: ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )*
+                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:957:2: ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )*
                     loop20:
                     do {
                         int alt20=2;
@@ -2108,11 +2137,11 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
                         switch (alt20) {
                     	case 1 :
-                    	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:957:4: ', ' ( (lv_mappings_6_0= ruleMapping ) )
+                    	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:957:4: ',' ( (lv_mappings_6_0= ruleMapping ) )
                     	    {
                     	    match(input,24,FOLLOW_24_in_ruleSwitch1656); 
 
-                    	            createLeafNode(grammarAccess.getSwitchAccess().getCommaSpaceKeyword_2_2_0(), null); 
+                    	            createLeafNode(grammarAccess.getSwitchAccess().getCommaKeyword_2_2_0(), null); 
                     	        
                     	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:961:1: ( (lv_mappings_6_0= ruleMapping ) )
                     	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:962:1: (lv_mappings_6_0= ruleMapping )
@@ -2227,7 +2256,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start ruleSelection
-    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1006:1: ruleSelection returns [EObject current=null] : ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) ;
+    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1006:1: ruleSelection returns [EObject current=null] : ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) ;
     public final EObject ruleSelection() throws RecognitionException {
         EObject current = null;
 
@@ -2240,11 +2269,11 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
          EObject temp=null; setCurrentLookahead(); resetLookahead(); 
             
         try {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1011:6: ( ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:1: ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1011:6: ( ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? ) )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:1: ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
             {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:1: ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:3: 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:1: ( 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )? )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1012:3: 'Selection' ( 'item=' ( (lv_item_2_0= RULE_ID ) ) ) ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
             {
             match(input,26,FOLLOW_26_in_ruleSelection1772); 
 
@@ -2293,7 +2322,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1044:3: ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1044:3: ( 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']' )?
             int alt23=2;
             int LA23_0 = input.LA(1);
 
@@ -2302,7 +2331,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
             }
             switch (alt23) {
                 case 1 :
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1044:5: 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )* ']'
+                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1044:5: 'mappings=[' ( (lv_mappings_4_0= ruleMapping ) ) ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )* ']'
                     {
                     match(input,23,FOLLOW_23_in_ruleSelection1817); 
 
@@ -2344,7 +2373,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1072:2: ( ', ' ( (lv_mappings_6_0= ruleMapping ) ) )*
+                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1072:2: ( ',' ( (lv_mappings_6_0= ruleMapping ) ) )*
                     loop22:
                     do {
                         int alt22=2;
@@ -2357,11 +2386,11 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
                         switch (alt22) {
                     	case 1 :
-                    	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1072:4: ', ' ( (lv_mappings_6_0= ruleMapping ) )
+                    	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1072:4: ',' ( (lv_mappings_6_0= ruleMapping ) )
                     	    {
                     	    match(input,24,FOLLOW_24_in_ruleSelection1849); 
 
-                    	            createLeafNode(grammarAccess.getSelectionAccess().getCommaSpaceKeyword_2_2_0(), null); 
+                    	            createLeafNode(grammarAccess.getSelectionAccess().getCommaKeyword_2_2_0(), null); 
                     	        
                     	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1076:1: ( (lv_mappings_6_0= ruleMapping ) )
                     	    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1077:1: (lv_mappings_6_0= ruleMapping )
@@ -2640,7 +2669,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start ruleMapping
-    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1204:1: ruleMapping returns [EObject current=null] : ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )? ) ;
+    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1204:1: ruleMapping returns [EObject current=null] : ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ) ;
     public final EObject ruleMapping() throws RecognitionException {
         EObject current = null;
 
@@ -2648,17 +2677,15 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
         Token lv_cmd_0_2=null;
         Token lv_label_2_1=null;
         Token lv_label_2_2=null;
-        Token lv_icon_4_1=null;
-        Token lv_icon_4_2=null;
 
          EObject temp=null; setCurrentLookahead(); resetLookahead(); 
             
         try {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1209:6: ( ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )? ) )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:1: ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )? )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1209:6: ( ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ) )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:1: ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) )
             {
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:1: ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )? )
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:2: ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )?
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:1: ( ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) ) )
+            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:2: ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) ) '=' ( ( (lv_label_2_1= RULE_ID | lv_label_2_2= RULE_STRING ) ) )
             {
             // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1210:2: ( ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) ) )
             // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1211:1: ( (lv_cmd_0_1= RULE_ID | lv_cmd_0_2= RULE_STRING ) )
@@ -2836,113 +2863,6 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1310:2: ( ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) ) )?
-            int alt27=2;
-            int LA27_0 = input.LA(1);
-
-            if ( (LA27_0==30) ) {
-                alt27=1;
-            }
-            switch (alt27) {
-                case 1 :
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1310:4: ':' ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) )
-                    {
-                    match(input,30,FOLLOW_30_in_ruleMapping2219); 
-
-                            createLeafNode(grammarAccess.getMappingAccess().getColonKeyword_3_0(), null); 
-                        
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1314:1: ( ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) ) )
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1315:1: ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) )
-                    {
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1315:1: ( (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING ) )
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1316:1: (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING )
-                    {
-                    // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1316:1: (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING )
-                    int alt26=2;
-                    int LA26_0 = input.LA(1);
-
-                    if ( (LA26_0==RULE_ID) ) {
-                        alt26=1;
-                    }
-                    else if ( (LA26_0==RULE_STRING) ) {
-                        alt26=2;
-                    }
-                    else {
-                        NoViableAltException nvae =
-                            new NoViableAltException("1316:1: (lv_icon_4_1= RULE_ID | lv_icon_4_2= RULE_STRING )", 26, 0, input);
-
-                        throw nvae;
-                    }
-                    switch (alt26) {
-                        case 1 :
-                            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1317:3: lv_icon_4_1= RULE_ID
-                            {
-                            lv_icon_4_1=(Token)input.LT(1);
-                            match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleMapping2238); 
-
-                            			createLeafNode(grammarAccess.getMappingAccess().getIconIDTerminalRuleCall_3_1_0_0(), "icon"); 
-                            		
-
-                            	        if (current==null) {
-                            	            current = factory.create(grammarAccess.getMappingRule().getType().getClassifier());
-                            	            associateNodeWithAstElement(currentNode, current);
-                            	        }
-                            	        try {
-                            	       		set(
-                            	       			current, 
-                            	       			"icon",
-                            	        		lv_icon_4_1, 
-                            	        		"ID", 
-                            	        		lastConsumedNode);
-                            	        } catch (ValueConverterException vce) {
-                            				handleValueConverterException(vce);
-                            	        }
-                            	    
-
-                            }
-                            break;
-                        case 2 :
-                            // ../org.openhab.model.sitemap/src-gen/org/openhab/model/parser/antlr/internal/InternalSitemap.g:1338:8: lv_icon_4_2= RULE_STRING
-                            {
-                            lv_icon_4_2=(Token)input.LT(1);
-                            match(input,RULE_STRING,FOLLOW_RULE_STRING_in_ruleMapping2258); 
-
-                            			createLeafNode(grammarAccess.getMappingAccess().getIconSTRINGTerminalRuleCall_3_1_0_1(), "icon"); 
-                            		
-
-                            	        if (current==null) {
-                            	            current = factory.create(grammarAccess.getMappingRule().getType().getClassifier());
-                            	            associateNodeWithAstElement(currentNode, current);
-                            	        }
-                            	        try {
-                            	       		set(
-                            	       			current, 
-                            	       			"icon",
-                            	        		lv_icon_4_2, 
-                            	        		"STRING", 
-                            	        		lastConsumedNode);
-                            	        } catch (ValueConverterException vce) {
-                            				handleValueConverterException(vce);
-                            	        }
-                            	    
-
-                            }
-                            break;
-
-                    }
-
-
-                    }
-
-
-                    }
-
-
-                    }
-                    break;
-
-            }
-
 
             }
 
@@ -3062,10 +2982,7 @@ public class InternalSitemapParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_RULE_ID_in_ruleMapping2123 = new BitSet(new long[]{0x0000000020000000L});
     public static final BitSet FOLLOW_RULE_STRING_in_ruleMapping2143 = new BitSet(new long[]{0x0000000020000000L});
     public static final BitSet FOLLOW_29_in_ruleMapping2161 = new BitSet(new long[]{0x0000000000000030L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleMapping2180 = new BitSet(new long[]{0x0000000040000002L});
-    public static final BitSet FOLLOW_RULE_STRING_in_ruleMapping2200 = new BitSet(new long[]{0x0000000040000002L});
-    public static final BitSet FOLLOW_30_in_ruleMapping2219 = new BitSet(new long[]{0x0000000000000030L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleMapping2238 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_STRING_in_ruleMapping2258 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleMapping2180 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_STRING_in_ruleMapping2200 = new BitSet(new long[]{0x0000000000000002L});
 
 }

@@ -954,9 +954,9 @@ ruleSwitch returns [EObject current=null]
 	    }
 
 )
-)(	', ' 
+)(	',' 
     {
-        createLeafNode(grammarAccess.getSwitchAccess().getCommaSpaceKeyword_2_2_0(), null); 
+        createLeafNode(grammarAccess.getSwitchAccess().getCommaKeyword_2_2_0(), null); 
     }
 (
 (
@@ -1069,9 +1069,9 @@ ruleSelection returns [EObject current=null]
 	    }
 
 )
-)(	', ' 
+)(	',' 
     {
-        createLeafNode(grammarAccess.getSelectionAccess().getCommaSpaceKeyword_2_2_0(), null); 
+        createLeafNode(grammarAccess.getSelectionAccess().getCommaKeyword_2_2_0(), null); 
     }
 (
 (
@@ -1307,66 +1307,14 @@ ruleMapping returns [EObject current=null]
 )
 
 )
-)(	':' 
-    {
-        createLeafNode(grammarAccess.getMappingAccess().getColonKeyword_3_0(), null); 
-    }
-(
-(
-(
-		lv_icon_4_1=RULE_ID
-		{
-			createLeafNode(grammarAccess.getMappingAccess().getIconIDTerminalRuleCall_3_1_0_0(), "icon"); 
-		}
-		{
-	        if ($current==null) {
-	            $current = factory.create(grammarAccess.getMappingRule().getType().getClassifier());
-	            associateNodeWithAstElement(currentNode, $current);
-	        }
-	        try {
-	       		set(
-	       			$current, 
-	       			"icon",
-	        		lv_icon_4_1, 
-	        		"ID", 
-	        		lastConsumedNode);
-	        } catch (ValueConverterException vce) {
-				handleValueConverterException(vce);
-	        }
-	    }
-
-    |		lv_icon_4_2=RULE_STRING
-		{
-			createLeafNode(grammarAccess.getMappingAccess().getIconSTRINGTerminalRuleCall_3_1_0_1(), "icon"); 
-		}
-		{
-	        if ($current==null) {
-	            $current = factory.create(grammarAccess.getMappingRule().getType().getClassifier());
-	            associateNodeWithAstElement(currentNode, $current);
-	        }
-	        try {
-	       		set(
-	       			$current, 
-	       			"icon",
-	        		lv_icon_4_2, 
-	        		"STRING", 
-	        		lastConsumedNode);
-	        } catch (ValueConverterException vce) {
-				handleValueConverterException(vce);
-	        }
-	    }
-
-)
-
-)
-))?)
+))
 ;
 
 
 
 
 
-RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_'|'0'..'9')+;
 
 RULE_INT : ('0'..'9')+;
 

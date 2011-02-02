@@ -1,8 +1,32 @@
 /**
- * <copyright>
- * </copyright>
+ * openHAB, the open Home Automation Bus.
+ * Copyright (C) 2011, openHAB.org <admin@openhab.org>
  *
+ * See the contributors.txt file in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses>.
+ *
+ * Additional permission under GNU GPL version 3 section 7
+ *
+ * If you modify this Program, or any covered work, by linking or
+ * combining it with Eclipse (or a modified version of that library),
+ * containing parts covered by the terms of the Eclipse Public License
+ * (EPL), the licensors of this Program grant you additional permission
+ * to convey the resulting work.
  */
+
 package org.openhab.model.sitemap;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -657,22 +681,13 @@ public interface SitemapPackage extends EPackage
   int MAPPING__LABEL = 1;
 
   /**
-   * The feature id for the '<em><b>Icon</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MAPPING__ICON = 2;
-
-  /**
    * The number of structural features of the '<em>Mapping</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPING_FEATURE_COUNT = 3;
+  int MAPPING_FEATURE_COUNT = 2;
 
 
   /**
@@ -950,17 +965,6 @@ public interface SitemapPackage extends EPackage
   EAttribute getMapping_Label();
 
   /**
-   * Returns the meta object for the attribute '{@link org.openhab.model.sitemap.Mapping#getIcon <em>Icon</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Icon</em>'.
-   * @see org.openhab.model.sitemap.Mapping#getIcon()
-   * @see #getMapping()
-   * @generated
-   */
-  EAttribute getMapping_Icon();
-
-  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1214,14 +1218,6 @@ public interface SitemapPackage extends EPackage
      * @generated
      */
     EAttribute MAPPING__LABEL = eINSTANCE.getMapping_Label();
-
-    /**
-     * The meta object literal for the '<em><b>Icon</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute MAPPING__ICON = eINSTANCE.getMapping_Icon();
 
   }
 

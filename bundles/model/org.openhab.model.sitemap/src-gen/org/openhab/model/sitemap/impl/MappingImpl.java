@@ -1,8 +1,32 @@
 /**
- * <copyright>
- * </copyright>
+ * openHAB, the open Home Automation Bus.
+ * Copyright (C) 2011, openHAB.org <admin@openhab.org>
  *
+ * See the contributors.txt file in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses>.
+ *
+ * Additional permission under GNU GPL version 3 section 7
+ *
+ * If you modify this Program, or any covered work, by linking or
+ * combining it with Eclipse (or a modified version of that library),
+ * containing parts covered by the terms of the Eclipse Public License
+ * (EPL), the licensors of this Program grant you additional permission
+ * to convey the resulting work.
  */
+
 package org.openhab.model.sitemap.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -24,7 +48,6 @@ import org.openhab.model.sitemap.SitemapPackage;
  * <ul>
  *   <li>{@link org.openhab.model.sitemap.impl.MappingImpl#getCmd <em>Cmd</em>}</li>
  *   <li>{@link org.openhab.model.sitemap.impl.MappingImpl#getLabel <em>Label</em>}</li>
- *   <li>{@link org.openhab.model.sitemap.impl.MappingImpl#getIcon <em>Icon</em>}</li>
  * </ul>
  * </p>
  *
@@ -71,26 +94,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @ordered
    */
   protected String label = LABEL_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getIcon() <em>Icon</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getIcon()
-   * @generated
-   * @ordered
-   */
-  protected static final String ICON_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getIcon() <em>Icon</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getIcon()
-   * @generated
-   * @ordered
-   */
-  protected String icon = ICON_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -164,29 +167,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getIcon()
-  {
-    return icon;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setIcon(String newIcon)
-  {
-    String oldIcon = icon;
-    icon = newIcon;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SitemapPackage.MAPPING__ICON, oldIcon, icon));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
@@ -196,8 +176,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return getCmd();
       case SitemapPackage.MAPPING__LABEL:
         return getLabel();
-      case SitemapPackage.MAPPING__ICON:
-        return getIcon();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -217,9 +195,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case SitemapPackage.MAPPING__LABEL:
         setLabel((String)newValue);
-        return;
-      case SitemapPackage.MAPPING__ICON:
-        setIcon((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -241,9 +216,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
       case SitemapPackage.MAPPING__LABEL:
         setLabel(LABEL_EDEFAULT);
         return;
-      case SitemapPackage.MAPPING__ICON:
-        setIcon(ICON_EDEFAULT);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -262,8 +234,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return CMD_EDEFAULT == null ? cmd != null : !CMD_EDEFAULT.equals(cmd);
       case SitemapPackage.MAPPING__LABEL:
         return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
-      case SitemapPackage.MAPPING__ICON:
-        return ICON_EDEFAULT == null ? icon != null : !ICON_EDEFAULT.equals(icon);
     }
     return super.eIsSet(featureID);
   }
@@ -283,8 +253,6 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
     result.append(cmd);
     result.append(", label: ");
     result.append(label);
-    result.append(", icon: ");
-    result.append(icon);
     result.append(')');
     return result.toString();
   }

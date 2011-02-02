@@ -42,7 +42,6 @@
     <genClasses ecoreClass="Sitemap.ecore#//Mapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sitemap.ecore#//Mapping/cmd"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sitemap.ecore#//Mapping/label"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sitemap.ecore#//Mapping/icon"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

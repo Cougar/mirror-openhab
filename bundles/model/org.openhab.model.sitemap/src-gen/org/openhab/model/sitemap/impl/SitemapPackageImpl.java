@@ -1,8 +1,32 @@
 /**
- * <copyright>
- * </copyright>
+ * openHAB, the open Home Automation Bus.
+ * Copyright (C) 2011, openHAB.org <admin@openhab.org>
  *
+ * See the contributors.txt file in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses>.
+ *
+ * Additional permission under GNU GPL version 3 section 7
+ *
+ * If you modify this Program, or any covered work, by linking or
+ * combining it with Eclipse (or a modified version of that library),
+ * containing parts covered by the terms of the Eclipse Public License
+ * (EPL), the licensors of this Program grant you additional permission
+ * to convey the resulting work.
  */
+
 package org.openhab.model.sitemap.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -447,16 +471,6 @@ public class SitemapPackageImpl extends EPackageImpl implements SitemapPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMapping_Icon()
-  {
-    return (EAttribute)mappingEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public SitemapFactory getSitemapFactory()
   {
     return (SitemapFactory)getEFactoryInstance();
@@ -519,7 +533,6 @@ public class SitemapPackageImpl extends EPackageImpl implements SitemapPackage
     mappingEClass = createEClass(MAPPING);
     createEAttribute(mappingEClass, MAPPING__CMD);
     createEAttribute(mappingEClass, MAPPING__LABEL);
-    createEAttribute(mappingEClass, MAPPING__ICON);
   }
 
   /**
@@ -599,7 +612,6 @@ public class SitemapPackageImpl extends EPackageImpl implements SitemapPackage
     initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMapping_Cmd(), ecorePackage.getEString(), "cmd", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMapping_Label(), ecorePackage.getEString(), "label", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getMapping_Icon(), ecorePackage.getEString(), "icon", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);
