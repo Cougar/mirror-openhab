@@ -27,49 +27,36 @@
  * to convey the resulting work.
  */
 
-package org.openhab.core.binding;
+package org.openhab.binding.http.internal;
+
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
+ * Extension of the default OSGi bundle activator
+ * 
  * @author Thomas.Eichstaedt-Engelen
- * @author Kai Kreuzer
  * @since 0.6.0
  */
-public interface BindingProvider {
+public final class HttpActivator implements BundleActivator {
 
-	/**
-	 * Adds a binding change listener, which gets notified whenever there 
-	 * are changes in the binding configuration
-	 * 
-	 * @param listener the binding change listener to add
-	 */
-	public void addBindingChangeListener(BindingChangeListener listener);
-
-	/**
-	 * Removes a binding change listener again.
-	 * Does nothing, if this listener has not been added before.
-	 * 
-	 * @param listener the binding listener to remove
-	 */
-	public void removeBindingChangeListener(BindingChangeListener listener);
+	private static Logger logger = LoggerFactory.getLogger(HttpActivator.class); 
 	
 	/**
-	 * Indicates whether this binding provider contains a binding for the given
-	 * <code>itemName</code>
-	 * 
-	 * @param itemName the itemName to check
-	 * 
-	 * @return <code>true</code> if this provider contains an adequate mapping
-	 * for <code>itemName</code> and <code>false</code> otherwise.
+	 * Called whenever the OSGi framework starts our bundle
 	 */
-	boolean providesBindingFor(String itemName);
+	public void start(BundleContext bc) throws Exception {
+		logger.debug("HTTP binding has been started.");
+	}
 
 	/**
-	 * Indicates whether this binding provider contains any binding
-	 * 
-	 * @return <code>true</code> if this provider contains any binding 
-	 * configuration and <code>false</code> otherwise 
+	 * Called whenever the OSGi framework stops our bundle
 	 */
-	public boolean providesBinding();
-
+	public void stop(BundleContext bc) throws Exception {
+		logger.debug("HTTP binding has been stopped.");
+	}
+	
 }
