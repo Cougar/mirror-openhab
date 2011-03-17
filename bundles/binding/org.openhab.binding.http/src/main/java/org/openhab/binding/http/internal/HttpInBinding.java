@@ -43,8 +43,13 @@ import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.core.items.ItemNotUniqueException;
 import org.openhab.core.items.ItemRegistry;
 import org.openhab.core.library.types.StringType;
+import org.openhab.core.transform.TransformationException;
+import org.openhab.core.transform.TransformationService;
 import org.openhab.core.types.State;
 import org.openhab.core.types.TypeParser;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.slf4j.Logger;
@@ -55,12 +60,13 @@ import org.slf4j.LoggerFactory;
  * An active binding which requests a given URL frequently.
  * 
  * @author Thomas.Eichstaedt-Engelen
+ * @author Kai Kreuzer
  * @since 0.6.0
  */
 public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> implements ManagedService {
 
 	static final Logger logger = LoggerFactory.getLogger(HttpInBinding.class);
-	
+
 	/** the timeout to use for connecting to a given host (defaults to 5000 milliseconds) */
 	private static int timeout = 5000;
 
@@ -69,7 +75,13 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 	
 	private Map<String, Long> lastUpdateMap = new HashMap<String, Long>();
 	
+	/** RegEx to extract a parse a function String <code>'(.*?)\((.*)\)'</code> */
+	private static final Pattern EXTRACT_FUNCTION_PATTERN = Pattern.compile("(.*?)\\((.*)\\)");
+
 	private ItemRegistry itemRegistry;
+	
+	
+	public HttpInBinding() {}
 	
 	
 	public void setItemRegistry(ItemRegistry itemRegistry) {
@@ -79,7 +91,7 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 	public void unsetItemRegistry(ItemRegistry itemRegistry) {
 		this.itemRegistry = null;
 	}
-
+		
 
 	/**
 	 * @{inheritDoc}
@@ -107,8 +119,31 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 					logger.debug("item '{}' is about to be refreshed now", itemName);
 					
 					String response = HttpUtil.executeUrl("GET", url, timeout);
-					String transformedResponse = transformResponse(transformation, response);
-					String abbreviatedResponse = StringUtils.abbreviate(transformedResponse, 256);
+					String transformedResponse;
+					
+					try {
+						String[] parts = splitTransformationConfig(transformation);
+						String transformationType = parts[0];
+						String transformationFunction = parts[1];
+						TransformationService transformationService = getTransformationService(transformationType);
+						if (transformationService != null) {
+							transformedResponse = transformationService.transform(transformationFunction, response);
+						} else {
+							transformedResponse = response;
+							logger.warn("couldn't transform response because transformationService of type '{}' is unavailable", transformationType);
+						}
+					}
+					catch (TransformationException te) {
+						logger.error("transformation throws exception [transformation="
+								+ transformation + ", response=" + response + "]", te);
+						
+						// in case of an error we return the reponse without any
+						// transformation
+						transformedResponse = response;
+					}
+					
+					String abbreviatedResponse = 
+						StringUtils.abbreviate(transformedResponse, 256).trim();
 					
 					logger.debug("transformed response is '{}'", transformedResponse);
 					
@@ -127,6 +162,54 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 		
 	}
 	
+	/**
+	 * Splits a transformation configuration string into its two parts - the
+	 * transformation type and the function/pattern to apply.
+	 * 
+	 * @param transformation the string to split
+	 * @return a string array with exactly two entries for the type and the function
+	 */
+	protected String[] splitTransformationConfig(String transformation) {
+		Matcher matcher = EXTRACT_FUNCTION_PATTERN.matcher(transformation);
+		
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException("given transformation function '" + transformation + "' does not follow the expected pattern '<function>(<pattern>)'");
+		}
+		matcher.reset();
+		
+		matcher.find();			
+		String type = matcher.group(1);
+		String pattern = matcher.group(2);
+	
+		return new String[] { type, pattern };
+	}
+
+
+	/**
+	 * Queries the OSGi service registry for a service that provides a transformation service of
+	 * a given transformation type (e.g. REGEX, XSLT, etc.)
+	 * 
+	 * @param transformationType the desired transformation type
+	 * @return a service instance or null, if none could be found
+	 */
+	protected TransformationService getTransformationService(String transformationType) {
+		BundleContext context = HttpActivator.getContext();
+		if(context!=null) {
+			String filter = "(openhab.transform=" + transformationType + ")";
+			try {
+				ServiceReference[] refs = context.getServiceReferences(TransformationService.class.getName(), filter);
+				if(refs!=null && refs.length > 0) {
+					return (TransformationService) context.getService(refs[0]);
+				} else {
+					logger.warn("Cannot get service reference for transformation service of type " + transformationType);
+				}
+			} catch (InvalidSyntaxException e) {
+				logger.warn("Cannot get service reference for transformation service of type " + transformationType, e);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Returns the {@link Item} for the given <code>itemName</code> or 
 	 * <code>null</code> if there is no or to many corresponding Items
@@ -160,6 +243,7 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 	 * or a {@link StringType} if <code>item</code> is <code>null</code> 
 	 */
 	private State createState(Item item, String abbreviatedResponse) {
+		
 		if (item != null) {
 			return TypeParser.parseState(item.getAcceptedDataTypes(), abbreviatedResponse);
 		}
@@ -167,52 +251,7 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 			return StringType.valueOf(abbreviatedResponse);
 		}
 	}
-
-    protected String transformResponse(String transformation, String response) {
-		
-    	String regex = extractRegexTransformation(transformation);
-		
-		Matcher matcher = Pattern.compile("^" + regex + "$", Pattern.DOTALL).matcher(response.trim());
-		if (!matcher.matches() && matcher.groupCount() != 1) {
-			logger.warn("the given regex must contain exactly one group");
-			return null;
-		}
-		matcher.reset();
-		
-		String result = "";
-		
-		while (matcher.find()) {
-			
-			if (matcher.groupCount() == 1) {
-				result = matcher.group(1);
-			}
-			else {
-				logger.warn("the given regular expression '" + transformation + "' must contain exactly one group -> couldn't compute transformation");
-			}
-		}
-		
-		return result;
-	}
-    
-    protected String extractRegexTransformation(String transformation) {
-    	
-		Matcher matcher = Pattern.compile("REGEX\\((.*)\\)").matcher(transformation);
-		
-		if (!matcher.matches() || matcher.groupCount() != 1) {
-			new UnsupportedOperationException("given transformation '" + transformation + "' is unsupported");
-		}
-		matcher.reset();
-		
-		// default regex (if we couldn't find anything better) is '(.*)'
-		String regex = "(.*)";
-		
-		while (matcher.find()) {
-    		regex = matcher.group(1);
-    	}
-    	
-		return regex;
-    }
-    
+	
     /**
      * @{inheritDoc}
      */
@@ -225,6 +264,7 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
     protected String getName() {
     	return "HTTP Refresh Service";
     }
+    
 
 	/**
 	 * {@inheritDoc}
@@ -246,5 +286,6 @@ public class HttpInBinding extends AbstractActiveBinding<HttpBindingProvider> im
 		}
 
 	}
+	
 
 }
