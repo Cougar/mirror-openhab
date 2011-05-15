@@ -27,62 +27,35 @@
  * to convey the resulting work.
  */
 
-package org.openhab.core.library.types;
+package org.openhab.binding.fritzbox.internal;
 
-import org.openhab.core.types.Command;
-import org.openhab.core.types.State;
-import org.openhab.core.types.PrimitiveType;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class StringType implements PrimitiveType, State, Command {
+/**
+ * Extension of the default OSGi bundle activator
+ * 
+ * @author Kai Kreuzer
+ * @since 0.7.0
+ */
+public class FritzboxActivator implements BundleActivator {
 
-	public final static StringType EMPTY = new StringType();
+	private static Logger logger = LoggerFactory.getLogger(FritzboxActivator.class); 
 	
-	private String value;
-
-	public StringType() {
-		this.value = "";
-	};
-	
-	public StringType(String value) {
-		this.value = value;
-	}
-	
-	public String toString() {
-		return value;
-	}
-	
-	public static StringType valueOf(String value) {
-		return new StringType(value);
+	/**
+	 * Called whenever the OSGi framework starts our bundle
+	 */
+	public void start(BundleContext bc) throws Exception {
+		logger.debug("Fritzbox binding has been started.");
 	}
 
-	public String format(String pattern) {
-		return String.format(pattern, value);
+	/**
+	 * Called whenever the OSGi framework stops our bundle
+	 */
+	public void stop(BundleContext bc) throws Exception {
+		logger.debug("Fritzbox binding has been stopped.");
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		StringType other = (StringType) obj;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
-			return false;
-		return true;
-	}
-	
 
 }
