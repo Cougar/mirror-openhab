@@ -121,6 +121,13 @@ public class ExecuteCommandJob implements Job {
 	 */
 	protected String[] parseCommand(String command) {
 		logger.trace("going to parse command '{}'", command);
+		
+		// if the command starts with '>' it contains a script which needs no
+		// further handling here ...
+		if (command.startsWith(">")) {
+			return new String[] {">", command.substring(1).trim()};
+		}
+		
 		StreamTokenizer tokenizer = 
 			new StreamTokenizer(new StringReader(command));
 		tokenizer.wordChars('_', '_');
@@ -149,7 +156,6 @@ public class ExecuteCommandJob implements Job {
 
 		return tokens.toArray(new String[0]);
 	}
-	
 	
 	/**
 	 * Simple implementation of the {@link Console} interface. It's output is

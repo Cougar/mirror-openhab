@@ -37,11 +37,17 @@ import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.core.items.ItemNotUniqueException;
 import org.openhab.core.items.ItemRegistry;
+import org.openhab.core.scriptengine.Script;
+import org.openhab.core.scriptengine.ScriptEngine;
+import org.openhab.core.scriptengine.ScriptExecutionException;
+import org.openhab.core.scriptengine.ScriptParsingException;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.State;
 import org.openhab.core.types.TypeParser;
 import org.openhab.io.console.internal.ConsoleActivator;
 import org.openhab.io.multimedia.actions.Audio;
+
+import com.google.common.base.Joiner;
 
 /**
  * This class provides generic methods for handling console input (i.e. pure strings).
@@ -74,6 +80,8 @@ public class ConsoleInterpreter {
 			ConsoleInterpreter.handleStatus(args, console);
 		} else if(arg.equals("say")) {
 			ConsoleInterpreter.handleSay(args, console);
+		} else if(arg.equals(">")) {
+			ConsoleInterpreter.handleScript(args, console);
 		} else {
 			console.printUsage(getUsage());
 		}		
@@ -278,6 +286,29 @@ public class ConsoleInterpreter {
 		}
 	}
 
+	public static void handleScript(String[] args, Console console) {
+		ScriptEngine scriptEngine = ConsoleActivator.scriptEngineTracker.getService();
+		if(scriptEngine!=null) {
+			String scriptString = Joiner.on(" ").join(args);
+			Script script;
+			try {
+				script = scriptEngine.newScriptFromString(scriptString);
+				Object result = script.execute();
+				if(result!=null) {
+					console.println(result.toString());
+				} else {
+					console.println("OK");
+				}
+			} catch (ScriptParsingException e) {
+				console.println(e.getMessage());
+			} catch (ScriptExecutionException e) {
+				console.println(e.getMessage());
+			}
+		} else {
+			console.println("Script engine is not available.");
+		}
+	}
+
 	/** returns a CR-separated list of usage texts for all available commands */
 	private static String getUsage() {
 		StringBuilder sb = new StringBuilder();
@@ -294,7 +325,8 @@ public class ConsoleInterpreter {
 				getCommandUsage(),
 				getStatusUsage(),
 				getItemsUsage(),
-				getSayUsage()
+				getSayUsage(),
+				getScriptUsage()
 		};
 	}
 	
@@ -316,6 +348,10 @@ public class ConsoleInterpreter {
 
 	public static String getSayUsage() {
 		return "say <sentence to say> - Says a message through TTS on the host machine";
+	}
+
+	public static String getScriptUsage() {
+		return "> <script to execute> - Executes a script";
 	}
 
 }
