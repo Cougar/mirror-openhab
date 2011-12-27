@@ -27,16 +27,44 @@
  * to convey the resulting work.
  */
 
-package org.openhab.core.types;
+package org.openhab.library.tel.items;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openhab.core.items.GenericItem;
+import org.openhab.core.types.Command;
+import org.openhab.core.types.State;
+import org.openhab.core.types.UnDefType;
+import org.openhab.library.tel.types.CallType;
 
 
 /**
- * A primitive type consists of a single value like a string, a number, etc.
+ * This item identifies a telephone call by its origin and destination.
  * 
- * @author Kai Kreuzer
- * @since 0.1.0
- *
+ * @author Thomas.Eichstaedt-Engelen
+ * @since 0.9.0
  */
-public interface PrimitiveType extends Type {
+public class CallItem extends GenericItem {
+	
+	private static List<Class<? extends State>> acceptedDataTypes = new ArrayList<Class<? extends State>>();
+	private static List<Class<? extends Command>> acceptedCommandTypes = new ArrayList<Class<? extends Command>>();
+
+	static {
+		acceptedDataTypes.add(CallType.class);
+		acceptedDataTypes.add(UnDefType.class);
+	}
+	
+	public CallItem(String name) {
+		super(name);
+	}
+
+	public List<Class<? extends State>> getAcceptedDataTypes() {
+		return acceptedDataTypes;
+	}
+
+	public List<Class<? extends Command>> getAcceptedCommandTypes() {
+		return acceptedCommandTypes;
+	}
 	
 }

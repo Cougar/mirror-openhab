@@ -42,14 +42,8 @@ import org.openhab.core.items.GroupFunction;
 import org.openhab.core.items.GroupItem;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemProvider;
+import org.openhab.core.items.ItemFactory;
 import org.openhab.core.items.ItemsChangeListener;
-import org.openhab.core.library.items.ContactItem;
-import org.openhab.core.library.items.DateTimeItem;
-import org.openhab.core.library.items.DimmerItem;
-import org.openhab.core.library.items.NumberItem;
-import org.openhab.core.library.items.RollershutterItem;
-import org.openhab.core.library.items.StringItem;
-import org.openhab.core.library.items.SwitchItem;
 import org.openhab.core.library.types.ArithmeticGroupFunction;
 import org.openhab.core.types.State;
 import org.openhab.core.types.TypeParser;
@@ -77,8 +71,8 @@ public class GenericItemProvider implements ItemProvider,
 		new ItemsStandaloneSetup().createInjectorAndDoEMFRegistration();
 	}
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(GenericItemProvider.class);
+	private static final Logger logger = 
+		LoggerFactory.getLogger(GenericItemProvider.class);
 
 	/** to keep track of all item change listeners */
 	private Collection<ItemsChangeListener> listeners = new HashSet<ItemsChangeListener>();
@@ -87,6 +81,18 @@ public class GenericItemProvider implements ItemProvider,
 	private Map<String, BindingConfigReader> bindingConfigReaders = new HashMap<String, BindingConfigReader>();
 
 	private ModelRepository modelRepository = null;
+	
+	private Collection<ItemFactory> itemFactorys = new ArrayList<ItemFactory>();
+	
+	
+	public void addItemFactory(ItemFactory factory) {
+		itemFactorys.add(factory);
+	}
+	
+	public void removeItemFactory(ItemFactory factory) {
+		itemFactorys.remove(factory);
+	}
+	
 
 	public Collection<Item> getItems() {
 		Map<String, Item> items = new HashMap<String, Item>();
@@ -242,24 +248,17 @@ public class GenericItemProvider implements ItemProvider,
 	}
 
 	protected GenericItem getItemOfType(String itemType, String itemName) {
-		if (itemType == null)
+		if (itemType == null) {
 			return null;
-
-		if (itemType.equals("Switch"))
-			return new SwitchItem(itemName);
-		if (itemType.equals("Rollershutter"))
-			return new RollershutterItem(itemName);
-		if (itemType.equals("Contact"))
-			return new ContactItem(itemName);
-		if (itemType.equals("String"))
-			return new StringItem(itemName);
-		if (itemType.equals("Number"))
-			return new NumberItem(itemName);
-		if (itemType.equals("Dimmer"))
-			return new DimmerItem(itemName);
-		if (itemType.equals("DateTime"))
-			return new DateTimeItem(itemName);
-
+		}
+		
+		for (ItemFactory factory : itemFactorys) {
+			GenericItem item = factory.createItem(itemType, itemName);
+			if (item != null) {
+				return item;
+			}
+		}
+		
 		return null;
 	}
 

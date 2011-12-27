@@ -27,16 +27,37 @@
  * to convey the resulting work.
  */
 
-package org.openhab.core.types;
+package org.openhab.binding.asterisk;
+
+import org.openhab.binding.asterisk.internal.AsteriskBindingTypes;
+import org.openhab.core.binding.BindingProvider;
 
 
 /**
- * A primitive type consists of a single value like a string, a number, etc.
+ * This interface is implemented by classes that can map openHAB items to
+ * Asterisk binding types.
  * 
- * @author Kai Kreuzer
- * @since 0.1.0
- *
+ * Implementing classes should register themselves as a service in order to be 
+ * taken into account.
+ * 
+ * @author Thomas.Eichstaedt-Engelen
+ * @since 0.9.0
  */
-public interface PrimitiveType extends Type {
+public interface AsteriskBindingProvider extends BindingProvider {
+	
+	/** 
+	 * Returns the binding type for an item name
+	 * 
+	 * @param itemName the name of the item
+	 * @return the items binding type
+	 */
+	public AsteriskBindingTypes getType(String itemName);
+
+	/**
+	 * Provides an array of all item names of this provider for a given binding type
+	 * @param bindingType the binding type of the items
+	 * @return an array of all item names of this provider for the given binding type
+	 */
+	public String[] getItemNamesForType(AsteriskBindingTypes bindingType);
 	
 }

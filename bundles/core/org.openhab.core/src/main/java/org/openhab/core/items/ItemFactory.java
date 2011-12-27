@@ -27,29 +27,33 @@
  * to convey the resulting work.
  */
 
-package org.openhab.core.types;
+package org.openhab.core.items;
 
-import java.util.Formatter;
 
-/** 
- * This is a parent interface for all states and commands.
- * It was introduced as many states can be commands at the same time and
- * vice versa. E.g a light can have the state ON or OFF and one can
- * also send ON and OFF as commands to the device. This duality is
- * captured by this marker interface and allows implementing classes
- * to be both state and command at the same time.
+/**
+ * This Factory creates concrete instances of the known ItemTypes.
  * 
- * @author Kai Kreuzer
- * @since 0.1.0
- *
+ * @author Thomas.Eichstaedt-Engelen
+ * @since 0.9.0
  */
-public interface Type {
-
-	/**
-	 * Formats the value of this type according to a pattern (see {@link Formatter}).
-	 * @param pattern the pattern to use
-	 * @return the formatted string
-	 */
-	public String format(String pattern);
+public interface ItemFactory {
 	
+	/**
+	 * Creates a new Item instance of type <code>itemTypeName</code> and the name
+	 * <code>itemName</code> 
+	 * 
+	 * @param itemTypeName
+	 * @param itemName
+	 * 
+	 * @return a new Item of type <code>itemTypeName</code> or
+	 * <code>null</code> if no matching class is known.
+	 */
+	GenericItem createItem(String itemTypeName, String itemName);
+	
+	/**
+	 * Returns the list of all supported ItemTypes of this Factory.
+	 * 
+	 * @return the supported ItemTypes
+	 */
+	String[] getSupportedItemTypes();
 }
