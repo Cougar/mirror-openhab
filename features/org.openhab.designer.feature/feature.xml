@@ -32,7 +32,7 @@
 <feature
       id="org.openhab.designer.feature"
       label="openHAB Designer"
-      version="0.9.1.qualifier"
+      version="1.0.0.qualifier"
       provider-name="openHAB.org"
       plugin="org.openhab.designer.core">
 
@@ -1102,6 +1102,27 @@ Public License instead of this License.  But first, please read
 
    <plugin
          id="org.openhab.core.transform"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.openhab.core.scriptengine"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.openhab.core.autoupdate"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.openhab.library.tel"
          download-size="0"
          install-size="0"
          version="0.0.0"

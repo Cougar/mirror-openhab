@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: openHAB Script Engine
 Bundle-SymbolicName: org.openhab.core.scriptengine
-Bundle-Version: 0.9.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: openHAB.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.openhab.core.scriptengine
@@ -12,9 +12,4 @@ Import-Package: org.eclipse.emf.common.notify,
  org.eclipse.xtext.validation,
  org.eclipse.xtext.xbase,
  org.eclipse.xtext.xbase.interpreter,
- org.openhab.core.items,
- org.openhab.core.types,
- org.openhab.model.core,
- org.openhab.model.items,
- org.osgi.framework,
- org.osgi.util.tracker
+ org.slf4j

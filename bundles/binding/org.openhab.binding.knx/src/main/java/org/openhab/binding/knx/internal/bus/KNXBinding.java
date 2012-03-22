@@ -59,10 +59,6 @@ import tuwien.auto.calimero.process.ProcessCommunicator;
 import tuwien.auto.calimero.process.ProcessEvent;
 import tuwien.auto.calimero.process.ProcessListener;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-
 /**
  * This is the central class that takes care of the event exchange between openHAB and KNX.
  * It is fully connected (read and write) to the openHAB event bus and also has write access
@@ -101,11 +97,12 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 	private DatapointInitializer initializer = new DatapointInitializer();
 
 	public void activate(ComponentContext componentContext) {
+		initializer = new DatapointInitializer();
 		initializer.start();
 	}
 
 	public void deactivate(ComponentContext componentContext) {
-		for(KNXBindingProvider provider : providers) {
+		for (KNXBindingProvider provider : providers) {
 			provider.removeBindingChangeListener(this);
 		}
 		providers.clear();
@@ -144,10 +141,10 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 	 */
 	@Override
 	public void receiveCommand(String itemName, Command command) {
-		if (ignoreEventList.contains(itemName + command.toString())) {
-			// if we have received this event from knx, don't send it back to
-			// the knx bus
-			ignoreEventList.remove(itemName + command.toString());
+		String ignoreEventListKey = itemName + command.toString();
+		if (ignoreEventList.contains(ignoreEventListKey)) {
+			ignoreEventList.remove(ignoreEventListKey);
+			logger.trace("we received this command (item='{}', state='{}') from KNX, so we don't send it back again -> ignore!", itemName, command.toString());
 		} else {
 			Iterable<Datapoint> datapoints = getDatapoints(itemName, command.getClass());
 			if (datapoints != null) {
@@ -181,10 +178,10 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 	 */
 	@Override
 	public void receiveUpdate(String itemName, State newState) {
-		if (ignoreEventList.contains(itemName + newState.toString())) {
-			// if we have received this event from knx, don't send it back to
-			// the knx bus
-			ignoreEventList.remove(itemName + newState.toString());
+		String ignoreEventListKey = itemName + newState.toString();
+		if (ignoreEventList.contains(ignoreEventListKey)) {
+			ignoreEventList.remove(ignoreEventListKey);
+			logger.trace("we received this update (item='{}', state='{}') from KNX, so we don't send it back again -> ignore!", itemName, newState.toString());
 		} else {
 			Iterable<Datapoint> datapoints = getDatapoints(itemName, newState.getClass());
 			if (datapoints != null) {
@@ -195,12 +192,11 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 							pc.write(datapoint, toDPTValue(newState, datapoint.getDPT()));
 							// after sending this out to KNX, we need to make sure that we do not
 							// react on our own update
-							ignoreEventList.add(itemName + newState.toString());
+							ignoreEventList.add(ignoreEventListKey);
 							
 							if (logger.isDebugEnabled()) {
 								logger.debug("wrote value '{}' to datapoint '{}'", newState, datapoint);
 							}
-							
 						} catch (KNXException e) {
 							logger.error("Update could not be sent to the KNX bus!", e);
 							KNXConnection.connect();
@@ -218,7 +214,7 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 		try {
 			GroupAddress destination = e.getDestination();
 			byte[] asdu = e.getASDU();
-			if(asdu.length==0) {
+			if (asdu.length==0) {
 				return;
 			}
 			for (String itemName : getItemNames(destination)) {
@@ -226,11 +222,12 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 				if (datapoints != null) {
 					for (Datapoint datapoint : datapoints) {
 						Type type = getType(datapoint, asdu);					
-						if(type!=null) {
+						if (type!=null) {
 							if (ignoreEventList.contains(itemName + type.toString())) {
 								// if we have send this event ourselves to KNX, 
 								// ignore the echo now
 								ignoreEventList.remove(itemName + type.toString());
+								logger.trace("Received event (item='{}', type='{}') is identified as echo to our own request -> ignore!", itemName, type.toString());
 							} else {
 								// we need to make sure that we won't send out this event to
 								// the knx bus again, when receiving it on the openHAB bus
@@ -253,9 +250,7 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 					}
 				}
 			}
-			if(logger.isDebugEnabled()) {
-				logger.debug("Received telegram for unknown group address " + destination.toString());
-			}
+			logger.debug("Received telegram for unknown group address {}", destination.toString());
 		} catch(RuntimeException re) {
 			logger.error("Error while receiving event from KNX bus: " + re.toString());
 		}
@@ -432,7 +427,7 @@ public class KNXBinding extends AbstractEventSubscriber implements ProcessListen
 		public void run() {
 			// as long as no interrupt is requested, continue running
 			while (!interrupted) {
-				if(datapointsToInitialize.size() > 0) {
+				if (datapointsToInitialize.size() > 0) {
 					// we first clone the list, so that it stays unmodified
 					Collection<Datapoint> clonedList = new HashSet<Datapoint>(datapointsToInitialize);
 					initializeDatapoints(clonedList);

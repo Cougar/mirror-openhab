@@ -33,7 +33,6 @@ import org.openhab.core.items.GenericItem;
 import org.openhab.core.items.GroupItem;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.core.items.ItemNotUniqueException;
 import org.openhab.core.items.ItemRegistry;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.State;
@@ -77,8 +76,6 @@ public class ItemUpdater extends AbstractEventSubscriber {
 				}
 			} catch (ItemNotFoundException e) {
 				logger.debug("Received update for non-existing item: {}", e.getMessage());
-			} catch (ItemNotUniqueException e) {
-				logger.debug("Received update for a not uniquely identifiable item: {}", e.getMessage());
 			}
 		}
 	}
@@ -87,12 +84,7 @@ public class ItemUpdater extends AbstractEventSubscriber {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void receiveCommand(String itemName, Command command) {
-		// if this command can be interpreted as a state, automatically perform a status update for the item
-		if(command instanceof State) {
-			receiveUpdate(itemName, (State) command);
-		}
-		
+	public void receiveCommand(String itemName, Command command) {	
 		// if the item is a group, we have to pass the command to it as it needs to pass the command to its members
 		if(itemRegistry!=null) {
 			try {
@@ -103,8 +95,6 @@ public class ItemUpdater extends AbstractEventSubscriber {
 				}
 			} catch (ItemNotFoundException e) {
 				logger.debug("Received command for non-existing item: {}", e.getMessage());
-			} catch (ItemNotUniqueException e) {
-				logger.debug("Received command for a not uniquely identifiable item: {}", e.getMessage());
 			}
 		}
 	}

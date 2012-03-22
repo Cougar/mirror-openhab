@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: openHAB Rule Model
 Bundle-Vendor: openHAB.org
-Bundle-Version: 0.9.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.openhab.model.rule; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.common,
  org.antlr.runtime,
  org.eclipse.emf.mwe.utils;resolution:=optional,
- org.eclipse.emf.mwe2.launch;resolution:=optional;x-installation:=greedy,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase,
  org.openhab.model.item,

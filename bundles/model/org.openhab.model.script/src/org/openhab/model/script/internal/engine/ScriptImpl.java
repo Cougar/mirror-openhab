@@ -82,11 +82,15 @@ public class ScriptImpl implements Script {
 			    	return null;
 			    }
 			    if (result.getException() != null) {
-			        throw new ScriptExecutionException("Error executing script: {}", result.getException());
+			        throw new ScriptExecutionException(result.getException().getMessage(), result.getException());
 			    } 
 			    return result.getResult();
 		    } catch(Throwable e) {
-		    	throw new ScriptExecutionException("An error occured during the script execution", e);
+		    	if(e instanceof ScriptExecutionException) {
+		    		throw (ScriptExecutionException) e;
+		    	} else {
+		    		throw new ScriptExecutionException("An error occured during the script execution: " + e.getMessage(), e);
+		    	}
 		    }
 		} else {
 	        throw new ScriptExecutionException("Script does not contain any expression");
