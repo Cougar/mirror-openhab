@@ -1,0 +1,12 @@
+Strategies {
+	all : eachUpdate
+	default changes : eachChange
+}
+
+Filters {
+	maxOnceAMinute : 1m
+}
+
+Items {
+	* : strategy = changes
+}
