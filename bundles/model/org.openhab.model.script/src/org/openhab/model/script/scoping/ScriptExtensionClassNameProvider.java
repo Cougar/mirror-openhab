@@ -30,8 +30,10 @@ package org.openhab.model.script.scoping;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.xtext.xbase.scoping.featurecalls.StaticImplicitMethodsFeatureForTypeProvider.ExtensionClassNameProvider;
 import org.openhab.core.items.Item;
 import org.openhab.core.persistence.actions.PersistenceExtensions;
@@ -83,6 +85,8 @@ public class ScriptExtensionClassNameProvider extends ExtensionClassNameProvider
 		result.put(Number.class, NumberExtensions.class);
 		result.put(Type.class, NumberExtensions.class);
 		result.put(Comparable.class, NumberExtensions.class);
+		result.put(String.class, StringUtils.class);
+		result.put(String.class, URLEncoder.class);
 		result.put(Item.class, PersistenceExtensions.class);
 		return result;
 	}

@@ -26,53 +26,34 @@
  * (EPL), the licensors of this Program grant you additional permission
  * to convey the resulting work.
  */
-package org.openhab.io.gcal.internal;
+package org.openhab.binding.knx.listener;
 
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
+import tuwien.auto.calimero.process.ProcessEvent;
+import tuwien.auto.calimero.process.ProcessListener;
 
 
 /**
+ * Enhancement of the {@link ProcessListener}-Interface. It contains additional
+ * methods which Calimero provides through the <code>ProcessListenerEx</code>.
+ * In order to use dependency injection mechanism we extracted the additional
+ * methods as new Interface. 
+ * 
  * @author Thomas.Eichstaedt-Engelen
  */
-public class ExecuteCommandJobTest {
-	
-	ExecuteCommandJob commandJob;
-	
-	@Before
-	public void init() {
-		commandJob = new ExecuteCommandJob();
-	}
+public interface KNXProcessListener extends ProcessListener {
 
-	@Test
-	public void testParseCommand() {
-		String[] content;
-		
-		content = commandJob.parseCommand("send ItemName value");
-		Assert.assertEquals("send", content[0]);
-		Assert.assertEquals("ItemName", content[1]);
-		Assert.assertEquals("value", content[2]);
-		
-		content = commandJob.parseCommand("send ItemName \"value value\"");
-		Assert.assertEquals("send", content[0]);
-		Assert.assertEquals("ItemName", content[1]);
-		Assert.assertEquals("value value", content[2]);
-		
-		content = commandJob.parseCommand("send ItemName \"125\"");
-		Assert.assertEquals("send", content[0]);
-		Assert.assertEquals("ItemName", content[1]);
-		Assert.assertEquals("125", content[2]);
-		
-		content = commandJob.parseCommand("send ItemName 125");
-		Assert.assertEquals("send", content[0]);
-		Assert.assertEquals("ItemName", content[1]);
-		Assert.assertEquals("125.0", content[2]);
-		
-		content = commandJob.parseCommand("> say(\"Hello\")");
-		Assert.assertEquals(">", content[0]);
-		Assert.assertEquals("say(\"Hello\")", content[1]);
-	}
+	/**
+	 * Indicates that a KNX group read request message was received from the KNX network.
+	 * 
+	 * @param e process event object
+	 */
+	void groupReadRequest(ProcessEvent e);
+
+	/**
+	 * Indicates that a KNX group read response message was received from the KNX network.
+	 * 
+	 * @param e process event object
+	 */
+	void groupReadResponse(ProcessEvent e);
 
 }
