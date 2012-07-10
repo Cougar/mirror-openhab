@@ -58,7 +58,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,8 +137,7 @@ public class FritzboxBinding extends AbstractBinding<FritzboxBindingProvider> im
 					// schedule a daily reconnection as sometimes the FritzBox stops sending data
 					// and thus blocks the monitor thread
 					try {
-						SchedulerFactory sf = new StdSchedulerFactory();
-						Scheduler sched = sf.getScheduler();
+						Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
 						JobDetail job = newJob(ReconnectJob.class)
 						    .withIdentity("Reconnect", "FritzBox")
 						    .build();
