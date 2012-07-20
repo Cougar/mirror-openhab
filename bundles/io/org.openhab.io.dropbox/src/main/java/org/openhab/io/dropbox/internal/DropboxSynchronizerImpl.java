@@ -486,8 +486,9 @@ public class DropboxSynchronizerImpl implements ManagedService {
 			try {
 				FileOutputStream os = new FileOutputStream(newLocalFile);
 				dropbox.getFile(entry.metadata.path, null, os, null);
+				logger.debug("Successfully downloaded file '{}'", fqPath);
 			} catch (FileNotFoundException fnfe) {
-				logger.warn("Couldn't download file '" + fqPath + "'", fnfe);
+				throw new DropboxException("Couldn't write file '" + fqPath + "'", fnfe);
 			}
 		}
 		
@@ -495,9 +496,7 @@ public class DropboxSynchronizerImpl implements ManagedService {
 		boolean success = newLocalFile.setLastModified(lastModified);
 		if (!success) {
 			logger.debug("Couldn't change attribute 'lastModified' of file '{}'", fqPath);
-		}
-		
-		logger.debug("Successfully downloaded file '{}'", fqPath);
+		}		
 	}
 
 	private Map<String, Long> extractDropboxEntries(File dropboxEntryFile) {
@@ -777,7 +776,7 @@ public class DropboxSynchronizerImpl implements ManagedService {
 					logger.debug("DropboxSynchronizer instance hasn't been initialized properly!");
 				}
 			} catch (DropboxException de) {
-				logger.error("Interaction with Dropbox API throws an exception", de);
+				logger.error("Synchronization files with Dropbox throws an exception", de);
 			}
 		}
 		
